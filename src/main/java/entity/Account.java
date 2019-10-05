@@ -1,10 +1,14 @@
+package entity;
+
+import service.Service;
+
 import java.util.Properties;
 
 public class Account {
     private String email;
     private String password;
 
-    Account() {
+    public Account() {
         Properties properties = Service.getProperties();
         email = properties.getProperty("yandex.email");
         password = properties.getProperty("yandex.password");
