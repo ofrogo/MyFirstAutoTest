@@ -21,13 +21,18 @@ public class TestBeru {
 
     @Before
     public void setUp() {
+        /*
+        Начальные настройки для веб-драйвера
+         */
+        System.setProperty("webdriver.chrome.driver", "/usr/bin/chromedriver");
         webDriver = new ChromeDriver();
         url = "https://beru.ru";
         webDriver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-        webDriver.manage().timeouts().pageLoadTimeout(10, TimeUnit.SECONDS);
+        webDriver.manage().timeouts().pageLoadTimeout(20, TimeUnit.SECONDS);
         webDriver.manage().timeouts().setScriptTimeout(10, TimeUnit.SECONDS);
-        account = new Account();
         webDriver.get(url);
+
+        account = new Account();
     }
 
     @Test
@@ -49,7 +54,7 @@ public class TestBeru {
         Authorization authorizationPage = mainPage.clickOnProfileLabel();
         mainPage = authorizationPage.authorizeAccount(account);
         Settings settingsPage = mainPage.clickOnMyProfileSetting();
-        Assert.assertTrue("Delivery label doesn't equal region label.", settingsPage.getDeliveryAddress().contains(mainPage.getRegionLabel()));
+        Assert.assertTrue("Delivery label doesn't equal region label.", settingsPage.getDeliveryAddress().equals(mainPage.getRegionLabel()));
     }
 
     @Test
@@ -62,7 +67,9 @@ public class TestBeru {
         elTCatalogPage.setPriceUp(priceUp);
         Assert.assertTrue("Price limit doesn't set.", elTCatalogPage.checkPriceList(priceFrom, priceUp));
         Garbage garbagePage = elTCatalogPage.addPenultToGarbage();
-        garbagePage.checkPrice();
+        Assert.assertTrue("Sum prices doesn't equal total price", garbagePage.checkPrice());
+        garbagePage.addWhileLess(2999);
+        Assert.assertTrue("Sum prices doesn't equal total price", garbagePage.checkPrice());
     }
 
     @After

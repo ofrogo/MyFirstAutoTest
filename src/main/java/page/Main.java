@@ -64,7 +64,9 @@ public class Main extends AbstractPage {
 
     public BeautyHygieneCatalog goToBeautyAndHygiene() {
         webDriver.findElement(catalogButton).click();
-        webDriver.findElement(beautyHygieneLabel).click();
+        WebElement webElement = webDriver.findElement(beautyHygieneLabel);
+        (new WebDriverWait(webDriver, 10)).until(ExpectedConditions.elementToBeClickable(webElement));
+        webElement.click();
         return new BeautyHygieneCatalog(webDriver);
     }
 

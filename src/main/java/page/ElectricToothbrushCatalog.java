@@ -9,6 +9,8 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.util.List;
 
 public class ElectricToothbrushCatalog extends AbstractPage {
+//    private By priceFromInput = By.cssSelector("div[data-auto=\"filter-range-glprice\"]._1cFYt5OFuy span[data-auto=\"filter-range-min\"]._23UlVlkdxZ input");
+//    private By priceUpInput = By.cssSelector("div[data-auto=\"filter-range-glprice\"]._1cFYt5OFuy span[data-auto=\"filter-range-max\"]._23UlVlkdxZ input");
     private By priceFromInput = By.cssSelector("input[name='Цена от");
     private By priceUpInput = By.cssSelector("input[name='Цена до");
     private By loadCurtain = By.cssSelector(".preloadable__preloader.preloadable__preloader_visibility_visible.preloadable__paranja");
@@ -47,6 +49,7 @@ public class ElectricToothbrushCatalog extends AbstractPage {
         btns.get(btns.size() - 2).click();
         (new WebDriverWait(webDriver, 15))
                 .until(ExpectedConditions.attributeToBe(toGarbageButton, "innerText", "В корзине"));
+        (new WebDriverWait(webDriver, 10)).until(ExpectedConditions.visibilityOf(webDriver.findElement(toGarbageButton)));
         (new WebDriverWait(webDriver, 10)).until(ExpectedConditions.elementToBeClickable(toGarbageButton));
         webDriver.findElement(toGarbageButton).click();
         return new Garbage(webDriver);
