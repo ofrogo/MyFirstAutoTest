@@ -4,12 +4,15 @@ import service.Service;
 
 import java.util.Properties;
 
+/*
+Класс отвечающий за хранение данных аккаунта
+ */
 public class Account {
     private String email;
     private String password;
 
     public Account() {
-        Properties properties = Service.getProperties();
+        Properties properties = Service.getProperties(); //считываем resources/config.properties
         email = properties.getProperty("yandex.email");
         password = properties.getProperty("yandex.password");
     }
