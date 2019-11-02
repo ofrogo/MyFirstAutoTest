@@ -8,9 +8,9 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class Garbage extends AbstractPage {
-    private By forFreeDeliveryLabel = By.cssSelector("span.voCFmXKfcL");
+    private By forFreeDeliveryLabel = By.cssSelector("div[data-auto=\"remainder-description\"] span.voCFmXKfcL");
     private By priceForItemsLabel = By.cssSelector("div[data-auto=\"total-items\"] span[data-auto=\"value\"]");
-    private By priceForDeliveryLabel = By.cssSelector("div[data-auto=\"total-delivery\"] span[data-auto=\"value\"]");
+    //private By priceForDeliveryLabel = By.cssSelector("div[data-auto=\"total-delivery\"] span[data-auto=\"value\"]");
     private By totalPriceLabel = By.cssSelector("div[data-auto=\"total-price\"] span._1oBlNqVHPq");
     private By plusItemButton = By.cssSelector("button._4qhIn2-ESi._2sJs248D-A._18c2gUxCdP._3hWhO4rvmA");
     private By priceForItemsLeftLabel = By.cssSelector("span._1u3j_pk1db._1pTV0mQZJz._37FeBjfnZk._1JLs4_hnVR span[data-tid=\"c3eaad93\"]:not(._3nXvrJWiZ0)");
@@ -26,7 +26,12 @@ public class Garbage extends AbstractPage {
         (new WebDriverWait(webDriver, 10))
                 .until(ExpectedConditions.attributeToBeNotEmpty(webElement, "innerText"));
         String buf = webElement.getAttribute("innerText");
-        return Integer.parseInt(buf.substring(0, buf.length() - 2).replaceAll(" ", ""));
+        if (Character.isDigit(buf.charAt(buf.length() - 1))) {
+            buf = buf.replaceAll(" ", "");
+        } else {
+            buf = buf.substring(0, buf.length() - 2).replaceAll(" ", "");
+        }
+        return Integer.parseInt(buf);
     }
 
     public String howMuchForFreeDelivery() {
@@ -35,9 +40,9 @@ public class Garbage extends AbstractPage {
 
     public Boolean checkPrice() {
         int priceForItems = getPriceFromLabel(priceForItemsLabel);
-        int priceForDelivery = getPriceFromLabel(priceForDeliveryLabel);
+        //int priceForDelivery = getPriceFromLabel(priceForDeliveryLabel);
         int totalPrice = getPriceFromLabel(totalPriceLabel);
-        return priceForDelivery + priceForItems == totalPrice;
+        return /*priceForDelivery + */priceForItems == totalPrice;
     }
 
     private void addOneMoreItem() {
