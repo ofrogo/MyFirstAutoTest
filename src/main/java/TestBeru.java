@@ -27,19 +27,34 @@ public class TestBeru {
         System.setProperty("webdriver.chrome.driver", "/usr/bin/chromedriver");
         webDriver = new ChromeDriver();
         url = "https://beru.ru";
+        /*
+        Установка неявных ожиданий
+         */
         webDriver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         webDriver.manage().timeouts().pageLoadTimeout(20, TimeUnit.SECONDS);
         webDriver.manage().timeouts().setScriptTimeout(10, TimeUnit.SECONDS);
         webDriver.get(url);
 
+        /*
+        Инициализация "аккаунта"
+         */
         account = new Account();
     }
 
     @Test
     public void firstAuthorization() {
+        /*
+        Открываем главную страницу
+         */
         Main mainPage = new Main(webDriver);
+        /*
+        Переходим на страницу авторизации
+         */
         Authorization authorizationPage = mainPage.clickOnProfileLabel();
         mainPage = authorizationPage.authorizeAccount(account);
+        /*
+        Выполняем все необходимые проверки
+         */
         Assert.assertEquals("Мой профиль", mainPage.getMyProfileLabel());
         Assert.assertEquals(account.getEmail(), mainPage.checkLoginAfterAuth());
     }

@@ -9,6 +9,9 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class Main extends AbstractPage {
+    /*
+    Все селекторы для определения элементов на Главной странице
+     */
     private By regionLabel = By.cssSelector("span[data-auto='region-form-opener']._2XJ6yiRp5w");
     private By loginToAccountLabel = By.cssSelector("a._3ioN70chUh._1FEpprw_Km._3Uc73lzxcf");
     private By myProfileLabel = By.cssSelector("span.pFhTbV17qj");
@@ -22,19 +25,28 @@ public class Main extends AbstractPage {
         super(webDriver);
     }
 
+    /*
+    Все действия обернуты в методы
+     */
     public Authorization clickOnProfileLabel() {
-        webDriver.findElement(loginToAccountLabel).click();
+        webDriver.findElement(loginToAccountLabel).click();  //находим элемент loginToAccountLabel и кликаем на него
         return new Authorization(webDriver);
     }
 
     public String checkLoginAfterAuth() {
-        webDriver.findElement(myProfileButton).click();
+        webDriver.findElement(myProfileButton).click();  //находим элемент myProfileButton и кликаем на него
+        /*
+        Явное ожидание пока loginLabel не станет видимым
+         */
         (new WebDriverWait(webDriver, 10)).until(ExpectedConditions.visibilityOf(webDriver.findElement(loginLabel)));
-        return webDriver.findElement(loginLabel).getText();
+        return webDriver.findElement(loginLabel).getText();  //находим элемент loginLabel и возвращаем текст который содержится в элементе
     }
 
     public String getMyProfileLabel() {
         WebElement webElement = webDriver.findElement(myProfileLabel);
+        /*
+        Явное ожидание пока у найденного элемента атрибут innerText (т.е. внутренний текст) перестанет быть пустым
+         */
         (new WebDriverWait(webDriver, 10)).until(ExpectedConditions.attributeToBeNotEmpty(webElement, "innerText"));
         return webElement.getAttribute("innerText");
     }
@@ -56,6 +68,9 @@ public class Main extends AbstractPage {
 
     public Settings clickOnMyProfileSetting() {
         webDriver.findElement(myProfileButton).click();
+        /*
+        Пытаемся найти элемент settingsButton в течение 10 секунд
+         */
         WebElement webElement = (new WebDriverWait(webDriver, 10))
                 .until((ExpectedCondition<WebElement>) d -> d.findElement(settingsButton));
         webElement.click();
@@ -65,11 +80,18 @@ public class Main extends AbstractPage {
     public BeautyHygieneCatalog goToBeautyAndHygiene() {
         webDriver.findElement(catalogButton).click();
         WebElement webElement = webDriver.findElement(beautyHygieneLabel);
+        /*
+        Явное ожидание пока webElement не станет кликабельным
+         */
         (new WebDriverWait(webDriver, 10)).until(ExpectedConditions.elementToBeClickable(webElement));
         webElement.click();
         return new BeautyHygieneCatalog(webDriver);
     }
 
+
+    /*
+    Подкласс отвечающий за всплывающее окно для смены города
+     */
     public class ChangeCityWindow {
 
         private By cityInput = By.cssSelector("div._1U2ErCeoqP  input[data-tid=\"37e0ab2d\"]");
@@ -89,7 +111,7 @@ public class Main extends AbstractPage {
         private void enterCity(String city) {
             WebElement webElement = (new WebDriverWait(webDriver, 10))
                     .until((ExpectedCondition<WebElement>) d -> d.findElement(cityInput));
-            webElement.sendKeys(Keys.chord(Keys.CONTROL, "a", Keys.DELETE));
+            webElement.sendKeys(Keys.chord(Keys.CONTROL, "a", Keys.DELETE));  //Очищаем поле ввода
             for (char c : city.toCharArray()) {
                 webElement.sendKeys(String.valueOf(c));
             }
