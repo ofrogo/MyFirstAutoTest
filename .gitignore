@@ -1,3 +1,4 @@
 # Project exclude paths
 /target/
 /resources/config.properties
+src/main/java/
