@@ -55,7 +55,7 @@ public class ElectricToothbrushCatalog extends AbstractPage {
 
     @Step("Добавление товара в корзину")
     public Garbage addPenultToGarbage() {
-        inGarbageButtons.get(inGarbageButtons.size() - 4).click();
+        inGarbageButtons.get(inGarbageButtons.size() - 2).click();
         //Service.getDriverWait().until(ExpectedConditions.attributeToBe(toGarbageButton, "innerText", "В корзине"));
         //Service.getDriverWait().until(ExpectedConditions.visibilityOf(toGarbageButton));
         Service.getDriverWait().until(ExpectedConditions.elementToBeClickable(toGarbageButton));

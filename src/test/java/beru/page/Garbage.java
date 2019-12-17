@@ -48,9 +48,15 @@ public class Garbage extends AbstractPage {
 
     private void addToothBrush() {
         String prevPrice = priceForItemsLabel.getText();
+        System.out.println(prevPrice);
+        Service.getDriverWait().until(ExpectedConditions.elementToBeClickable(plusItemButton));
         plusItemButton.click();
-        Service.getDriverWait().until((ExpectedCondition<Boolean>) driver ->
-                !priceForItemsLabel.getText().equals(prevPrice));
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        Service.getDriverWait().until((ExpectedCondition<Boolean>) driver -> !priceForItemsLabel.getText().equals(prevPrice));
     }
 
     @Step(value = "Переходим к оформлению заказа")

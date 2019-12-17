@@ -1,15 +1,15 @@
 package beru.page;
 
+import beru.service.Service;
 import io.qameta.allure.Step;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import beru.service.Service;
 
 public class Main extends AbstractPage {
-    @FindBy(css = "span[data-auto='region-form-opener']._2XJ6yiRp5w")
+    @FindBy(css = "div[data-zone-name=\"SubHeader\"] span[data-auto='region-form-opener']")
     private WebElement regionLabel;
 
     @FindBy(css = "a._3ioN70chUh._1FEpprw_Km._3Uc73lzxcf")
@@ -79,12 +79,13 @@ public class Main extends AbstractPage {
 
     public String getRegionLabel() {
         Service.getDriverWait().until(ExpectedConditions.attributeToBeNotEmpty(regionLabel, "innerText"));
-        return regionLabel.getAttribute("innerText");
+        return regionLabel.getText().split("\\s")[2];
     }
 
     public Boolean checkRegion(String city) {
         Service.getDriverWait().until(ExpectedConditions.not(ExpectedConditions.stalenessOf(regionLabel)));
-        return regionLabel.getText().equals(city);
+        System.out.println(regionLabel.getText().split("\\s")[2]);
+        return regionLabel.getText().split("\\s")[2].equals(city);
     }
 
     @Step("Переход на страницу настроек")
@@ -92,7 +93,7 @@ public class Main extends AbstractPage {
         moveCursorOnProfile();
         myProfileButton.click();
         /*
-        Пытаемся найти элемент settingsButton в течение 10 секунд
+        Пытаемся найти элемент settingsButton в течение 30 секунд
          */
         Service.getDriverWait().until(ExpectedConditions.elementToBeClickable(settingsButton));
         settingsButton.click();
