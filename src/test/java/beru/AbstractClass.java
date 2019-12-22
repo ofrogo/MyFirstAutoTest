@@ -31,7 +31,10 @@ public class AbstractClass {
             webDriver.manage().timeouts().setScriptTimeout(10, TimeUnit.SECONDS);
             webDriver.manage().window().maximize();
             webDriver.get("https://beru.ru");
+
+
             EventFiringWebDriver driver = new EventFiringWebDriver(webDriver);
+
             driver.register(new AbstractWebDriverEventListener() {
                 @Override
                 public void beforeClickOn(WebElement webElement, WebDriver webDriver) {
@@ -39,6 +42,8 @@ public class AbstractClass {
                     js.executeScript("arguments[0].setAttribute('style', 'border: 2px solid red;');", webElement);
                 }
             });
+
+
             Service.setWebDriver(driver);
             Service.setDriverWait(new WebDriverWait(webDriver, 30));
             account = new Account();

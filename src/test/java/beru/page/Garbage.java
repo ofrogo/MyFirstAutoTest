@@ -1,6 +1,7 @@
 package beru.page;
 
 import io.qameta.allure.Step;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedCondition;
@@ -13,11 +14,11 @@ public class Garbage extends AbstractPage {
     private WebElement forFreeDeliveryLabel;
     @FindBy(css = "div[data-auto=\"total-items\"] span[data-auto=\"value\"]")
     private WebElement priceForItemsLabel;
-    @FindBy(css = "div[data-auto=\"total-delivery\"] span[data-auto=\"value\"]")
+    @FindBy(xpath = "//div[contains(@data-auto, 'total-items')]")
     private WebElement priceForDeliveryLabel;
     @FindBy(css = "div[data-auto=\"total-price\"] span._1oBlNqVHPq")
     private WebElement totalPriceLabel;
-    @FindBy(css = "button._4qhIn2-ESi._2sJs248D-A._18c2gUxCdP._3hWhO4rvmA")
+    @FindBy(xpath = "//span[contains(text(), '+')]/../..")
     private WebElement plusItemButton;
     @FindBy(css = "span._1u3j_pk1db._1pTV0mQZJz._37FeBjfnZk._1JLs4_hnVR span[data-tid=\"c3eaad93\"]:not(._3nXvrJWiZ0)")
     private WebElement priceForItemsLeftLabel;
@@ -47,15 +48,12 @@ public class Garbage extends AbstractPage {
     }
 
     private void addToothBrush() {
-        String prevPrice = priceForItemsLabel.getText();
-        System.out.println(prevPrice);
-        Service.getDriverWait().until(ExpectedConditions.elementToBeClickable(plusItemButton));
+        String prevPrice = priceForDeliveryLabel.findElement(By.xpath(".//span[@data-auto = 'value']")).getText();
+
         plusItemButton.click();
-        try {
-            Thread.sleep(500);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+
+        Service.getDriverWait().until((ExpectedCondition<Boolean>) driver ->
+                !priceForDeliveryLabel.findElement(By.xpath(".//span[@data-auto = 'value']")).getText().equals(prevPrice));
         Service.getDriverWait().until((ExpectedCondition<Boolean>) driver -> !priceForItemsLabel.getText().equals(prevPrice));
     }
 

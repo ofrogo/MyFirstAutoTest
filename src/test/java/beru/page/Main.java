@@ -42,6 +42,7 @@ public class Main extends AbstractPage {
      */
     @Step("Переход на окно автризации")
     public Authorization clickOnProfileLabel() {
+
         loginToAccountLabel.click();  //находим элемент loginToAccountLabel и кликаем на него
         return new Authorization();
     }
